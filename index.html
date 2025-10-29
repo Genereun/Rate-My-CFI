@@ -2,179 +2,297 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Pilot Training Reviews</title>
+<title>Rate my CFI</title>
 <style>
-  body {
+body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
-    background: #f5f5f5;
-  }
-  h1 {
+    padding: 0;
+    background-color: #f5f5f5;
+}
+nav {
+    background-color: #34495e;
+    padding: 10px 20px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+nav .logo span {
+    color: #f1c40f;
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+header {
     text-align: center;
-  }
-  .section {
-    margin-bottom: 40px;
+    padding: 40px 20px;
+    background-color: #fff;
+}
+header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+header h1 span {
+    color: #f1c40f;
+}
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px;
+}
+.search-container input[type="text"] {
+    padding: 8px;
+    width: 300px;
+}
+.search-container button {
+    padding: 8px 16px;
+}
+#search-results .item {
+    background-color: #fff;
+    margin: 10px auto;
+    padding: 10px;
+    max-width: 600px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.how-it-works {
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.how-it-works h2 {
+    text-align: center;
+}
+.how-it-works ol {
+    padding-left: 20px;
+}
+.section {
+    margin: 20px;
     padding: 20px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  .item-list {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.item-list {
     list-style: none;
     padding: 0;
-  }
-  .item {
+}
+.item {
     padding: 10px;
     border-bottom: 1px solid #ddd;
-  }
-  .item:last-child {
+}
+.item:last-child {
     border-bottom: none;
-  }
-  .item h3 {
-    margin: 0 0 5px;
-  }
-  .rating {
+}
+.rating {
     color: #f39c12;
-  }
-  .comment {
+}
+.comment {
     color: #555;
-  }
-  .form-group {
+}
+.form-group {
     margin-bottom: 10px;
-  }
-  label {
+}
+label {
     display: block;
     margin-bottom: 5px;
-  }
-  input[type="text"],
-  input[type="number"],
-  textarea {
+}
+input[type="text"],
+input[type="number"],
+textarea {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-  }
-  button {
+}
+button {
     padding: 10px 15px;
     background: #3498db;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
-  button:hover {
+}
+button:hover {
     background: #2980b9;
-  }
+}
 </style>
 </head>
 <body>
-<h1>Pilot Training Reviews</h1>
-
-<div id="sections-container">
-  <!-- Sections will be generated here by JavaScript -->
-</div>
-
+<nav>
+  <div class="logo">Rate my <span>CFI</span></div>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Login</a></li>
+  </ul>
+</nav>
+<header>
+  <h1>Rate my <span>CFI</span></h1>
+  <div class="search-container">
+    <input type="text" id="search-input" list="search-list" placeholder="Search for schools, instructors, or DPEs...">
+    <datalist id="search-list"></datalist>
+    <button onclick="performSearch()">Search</button>
+  </div>
+  <div id="search-results"></div>
+</header>
+<section class="how-it-works">
+  <h2>How it works</h2>
+  <ol>
+    <li>Search for a flight school, instructor, or DPE to read reviews.</li>
+    <li>Browse through ratings and comments from other student pilots.</li>
+    <li>Add your own review to help others choose the best training options.</li>
+  </ol>
+</section>
+<div id="sections-container"></div>
 <script>
-  // Categories for reviews
-  const categories = ['Schools', 'Instructors', 'DPES'];
-
-  // Retrieve review data from local storage
-  function getData() {
-    const data = localStorage.getItem('pilotReviews');
-    return data ? JSON.parse(data) : { 'Schools': [], 'Instructors': [], 'DPES': [] };
-  }
-
-  // Save review data to local storage
-  function saveData(data) {
-    localStorage.setItem('pilotReviews', JSON.stringify(data));
-  }
-
-  // Build a section (schools, instructors, DPEs)
-  function createSection(category) {
-    const section = document.createElement('div');
-    section.className = 'section';
-    section.innerHTML = `
-      <h2>${category}</h2>
-      <ul class="item-list" id="${category}-list"></ul>
-      <h3>Add new ${category.slice(0, -1)}</h3>
-      <div class="form-group">
-        <label for="${category}-name">Name</label>
-        <input type="text" id="${category}-name" placeholder="Enter ${category.slice(0, -1)} name" />
-      </div>
-      <div class="form-group">
-        <label for="${category}-rating">Rating (1-5)</label>
-        <input type="number" id="${category}-rating" min="1" max="5" />
-      </div>
-      <div class="form-group">
-        <label for="${category}-comment">Comment</label>
-        <textarea id="${category}-comment" rows="3" placeholder="Write a comment"></textarea>
-      </div>
-      <button onclick="addItem('${category}')">Add ${category.slice(0, -1)}</button>
-    `;
-    return section;
-  }
-
-  // Render all sections and their reviews
-  function renderSections() {
-    const container = document.getElementById('sections-container');
-    container.innerHTML = '';
-    categories.forEach(category => {
-      container.appendChild(createSection(category));
+const categories = ['Schools', 'Instructors', 'DPES'];
+function getData() {
+  const data = localStorage.getItem('pilotReviews');
+  return data ? JSON.parse(data) : { 'Schools': [], 'Instructors': [], 'DPES': [] };
+}
+function saveData(data) {
+  localStorage.setItem('pilotReviews', JSON.stringify(data));
+}
+function createSection(category) {
+  const section = document.createElement('div');
+  section.className = 'section';
+  section.innerHTML = `
+    <h2>${category}</h2>
+    <ul class="item-list" id="${category}-list"></ul>
+    <h3>Add new ${category.slice(0, -1)}</h3>
+    <div class="form-group">
+      <label for="${category}-name">Name</label>
+      <input type="text" id="${category}-name" placeholder="Enter ${category.slice(0, -1)} name">
+    </div>
+    <div class="form-group">
+      <label for="${category}-rating">Rating (1-5)</label>
+      <input type="number" id="${category}-rating" min="1" max="5">
+    </div>
+    <div class="form-group">
+      <label for="${category}-comment">Comment</label>
+      <textarea id="${category}-comment" rows="3" placeholder="Write a comment"></textarea>
+    </div>
+    <button onclick="addItem('${category}')">Add ${category.slice(0, -1)}</button>
+  `;
+  return section;
+}
+function renderSections() {
+  const container = document.getElementById('sections-container');
+  container.innerHTML = '';
+  categories.forEach(category => {
+    container.appendChild(createSection(category));
+  });
+  renderItems();
+  populateSearchSuggestions();
+}
+function renderItems() {
+  const data = getData();
+  categories.forEach(category => {
+    const list = document.getElementById(category + '-list');
+    list.innerHTML = '';
+    data[category].forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'item';
+      li.innerHTML = `
+        <h3>${item.name}</h3>
+        <div class="rating">${'★'.repeat(item.rating)}${'☆'.repeat(5 - item.rating)}</div>
+        <div class="comment">${item.comment}</div>
+      `;
+      list.appendChild(li);
     });
-    renderItems();
+  });
+}
+function addItem(category) {
+  const nameInput = document.getElementById(category + '-name');
+  const ratingInput = document.getElementById(category + '-rating');
+  const commentInput = document.getElementById(category + '-comment');
+  const name = nameInput.value.trim();
+  const rating = parseInt(ratingInput.value);
+  const comment = commentInput.value.trim();
+  if (!name || isNaN(rating) || rating < 1 || rating > 5) {
+    alert('Please fill out a valid name and rating between 1 and 5.');
+    return;
   }
-
-  // Render reviews for each category
-  function renderItems() {
-    const data = getData();
-    categories.forEach(category => {
-      const list = document.getElementById(category + '-list');
-      list.innerHTML = '';
-      data[category].forEach(item => {
-        const li = document.createElement('li');
-        li.className = 'item';
-        li.innerHTML = `
-          <h3>${item.name}</h3>
-          <div class="rating">${'★'.repeat(item.rating)}${'☆'.repeat(5 - item.rating)}</div>
-          <div class="comment">${item.comment}</div>
-        `;
-        list.appendChild(li);
-      });
+  const data = getData();
+  data[category].push({ name, rating, comment });
+  saveData(data);
+  nameInput.value = '';
+  ratingInput.value = '';
+  commentInput.value = '';
+  renderItems();
+  populateSearchSuggestions();
+}
+function populateSearchSuggestions() {
+  const data = getData();
+  const suggestions = [];
+  categories.forEach(cat => {
+    data[cat].forEach(item => {
+      suggestions.push(item.name);
+    });
+  });
+  const datalist = document.getElementById('search-list');
+  datalist.innerHTML = '';
+  suggestions.forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    datalist.appendChild(option);
+  });
+}
+function performSearch() {
+  const query = document.getElementById('search-input').value.trim().toLowerCase();
+  const resultsDiv = document.getElementById('search-results');
+  resultsDiv.innerHTML = '';
+  if (!query) {
+    resultsDiv.textContent = '';
+    return;
+  }
+  const data = getData();
+  let results = [];
+  categories.forEach(cat => {
+    data[cat].forEach(item => {
+      if (item.name.toLowerCase().includes(query)) {
+        results.push({ category: cat, item });
+      }
+    });
+  });
+  if (results.length === 0) {
+    resultsDiv.innerHTML = '<p>No matches found.</p>';
+  } else {
+    results.forEach(result => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `<strong>${result.item.name}</strong> (${result.category})<br>
+        <div class="rating">${'★'.repeat(result.item.rating)}${'☆'.repeat(5 - result.item.rating)}</div>
+        <div class="comment">${result.item.comment}</div>`;
+      resultsDiv.appendChild(div);
     });
   }
-
-  // Add a new review
-  function addItem(category) {
-    const nameInput = document.getElementById(category + '-name');
-    const ratingInput = document.getElementById(category + '-rating');
-    const commentInput = document.getElementById(category + '-comment');
-    const name = nameInput.value.trim();
-    const rating = parseInt(ratingInput.value);
-    const comment = commentInput.value.trim();
-
-    // Basic validation
-    if (!name || isNaN(rating) || rating < 1 || rating > 5) {
-      alert('Please fill out a valid name and rating between 1 and 5.');
-      return;
-    }
-
-    const data = getData();
-    data[category].push({ name, rating, comment });
-    saveData(data);
-
-    // Clear form inputs
-    nameInput.value = '';
-    ratingInput.value = '';
-    commentInput.value = '';
-
-    // Refresh lists
-    renderItems();
-  }
-
-  // Initialize the page
-  document.addEventListener('DOMContentLoaded', renderSections);
+}
+document.addEventListener('DOMContentLoaded', renderSections);
 </script>
 </body>
 </html>
