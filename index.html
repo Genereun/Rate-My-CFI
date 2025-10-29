@@ -1,298 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Rate my CFI</title>
-<style>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Rate my CFI</title>
+ <style>
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f5f5;
+  color: #1a1a1a;
 }
-nav {
-    background-color: #34495e;
-    padding: 10px 20px;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.hidden {
+  display: none;
 }
-nav .logo {
-    font-size: 24px;
-    font-weight: bold;
+.top-nav {
+  background: #1f1f1f;
+  padding: 1rem 2rem;
 }
-nav .logo span {
-    color: #f1c40f;
+.top-nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
 }
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 20px;
+.top-nav a {
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
 }
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
+
+.search-header {
+  background: #1f1f1f;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
 }
-header {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #fff;
+.search-header h1 {
+  margin: 0;
+  font-size: 2rem;
 }
-header h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
-}
-header h1 span {
-    color: #f1c40f;
+.highlight {
+  color: #FFD700;
 }
 .search-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin: 20px;
+  margin-top: 1rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  gap: 0.5rem;
 }
 .search-container input[type="text"] {
-    padding: 8px;
-    width: 300px;
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 .search-container button {
-    padding: 8px 16px;
+  padding: 0.5rem 1rem;
+  background: #0074D9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
 }
-#search-results .item {
-    background-color: #fff;
-    margin: 10px auto;
-    padding: 10px;
-    max-width: 600px;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.instructions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 2rem 0;
 }
-.how-it-works {
-    background-color: #fff;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.instructions .card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 300px;
+  text-align: center;
 }
-.how-it-works h2 {
-    text-align: center;
+.instructions .card img {
+  max-width: 80px;
+  margin-bottom: 1rem;
 }
-.how-it-works ol {
-    padding-left: 20px;
+.instructions .card h3 {
+  margin-top: 0;
 }
-.section {
-    margin: 20px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+.login-screen, .admin-dashboard {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.item-list {
-    list-style: none;
-    padding: 0;
+.login-screen h2, .admin-dashboard h2 {
+  text-align: center;
+  margin-top: 0;
 }
-.item {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+.login-screen input {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
-.item:last-child {
-    border-bottom: none;
+.login-screen button {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  background: #0074D9;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 1rem;
 }
-.rating {
-    color: #f39c12;
+
+/* Additional Styles for Admin Dashboard */
+.admin-dashboard button {
+  padding: 0.5rem 1rem;
+  background: #0074D9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
 }
-.comment {
-    color: #555;
+.admin-dashboard .item {
+  background: #f9f9f9;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
-.form-group {
-    margin-bottom: 10px;
+.admin-dashboard .item button {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
 }
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-input[type="text"],
-input[type="number"],
-textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-button {
-    padding: 10px 15px;
-    background: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-button:hover {
-    background: #2980b9;
-}
+
 </style>
 </head>
 <body>
-<nav>
-  <div class="logo">Rate my <span>CFI</span></div>
+ <nav class="top-nav">
   <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Login</a></li>
+    <li><a onclick="showHome()">Home</a></li>
+    <li><a onclick="showLogin()">Log In</a></li>
   </ul>
-</nav>
-<header>
-  <h1>Rate my <span>CFI</span></h1>
-  <div class="search-container">
-    <input type="text" id="search-input" list="search-list" placeholder="Search for schools, instructors, or DPEs...">
-    <datalist id="search-list"></datalist>
-    <button onclick="performSearch()">Search</button>
-  </div>
-  <div id="search-results"></div>
-</header>
-<section class="how-it-works">
-  <h2>How it works</h2>
-  <ol>
-    <li>Search for a flight school, instructor, or DPE to read reviews.</li>
-    <li>Browse through ratings and comments from other student pilots.</li>
-    <li>Add your own review to help others choose the best training options.</li>
-  </ol>
-</section>
-<div id="sections-container"></div>
-<script>
-const categories = ['Schools', 'Instructors', 'DPES'];
-function getData() {
-  const data = localStorage.getItem('pilotReviews');
-  return data ? JSON.parse(data) : { 'Schools': [], 'Instructors': [], 'DPES': [] };
-}
-function saveData(data) {
-  localStorage.setItem('pilotReviews', JSON.stringify(data));
-}
-function createSection(category) {
-  const section = document.createElement('div');
-  section.className = 'section';
-  section.innerHTML = `
-    <h2>${category}</h2>
-    <ul class="item-list" id="${category}-list"></ul>
-    <h3>Add new ${category.slice(0, -1)}</h3>
-    <div class="form-group">
-      <label for="${category}-name">Name</label>
-      <input type="text" id="${category}-name" placeholder="Enter ${category.slice(0, -1)} name">
+ </nav>
+
+ <div id="home" class="home-screen">
+  <header class="search-header">
+    <h1>Rate my <span class="highlight">CFI</span></h1>
+    <div class="search-container">
+      <input type="text" id="searchBar" placeholder="Search for schools, CFIs, or DPEs" list="searchSuggestions" />
+      <datalist id="searchSuggestions">
+        <!-- Suggestions will be inserted here by JavaScript -->
+      </datalist>
+      <button onclick="performSearch()">Search</button>
     </div>
-    <div class="form-group">
-      <label for="${category}-rating">Rating (1-5)</label>
-      <input type="number" id="${category}-rating" min="1" max="5">
+  </header>
+
+  <section class="instructions">
+    <div class="card">
+      <img src="airport.png" alt="Find your school" />
+      <h3>Find your school</h3>
+      <p>Search for flight schools near you. Discover details and programs they offer.</p>
     </div>
-    <div class="form-group">
-      <label for="${category}-comment">Comment</label>
-      <textarea id="${category}-comment" rows="3" placeholder="Write a comment"></textarea>
+    <div class="card">
+      <img src="private.png" alt="Choose your CFI" />
+      <h3>Choose your CFI</h3>
+      <p>Select from a list of Certified Flight Instructors. See their ratings and reviews.</p>
     </div>
-    <button onclick="addItem('${category}')">Add ${category.slice(0, -1)}</button>
-  `;
-  return section;
+    <div class="card">
+      <img src="thumbs-up-down.png" alt="Rate your experience" />
+      <h3>Rate your experience</h3>
+      <p>After your flight, come back and rate your school and instructor.</p>
+    </div>
+  </section>
+ </div>
+
+ <div id="login" class="login-screen hidden">
+  <h2>Login</h2>
+  <input type="text" id="admin-username" placeholder="Username" />
+  <input type="password" id="admin-password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+ </div>
+
+ <div id="admin" class="admin-dashboard hidden">
+  <h2>Admin Dashboard</h2>
+  <button onclick="goBack()">Back to Home</button>
+  <div id="items-container"></div>
+ </div>
+
+ <script>
+ // script.js
+function showHome() {
+  document.getElementById("home").classList.remove("hidden");
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("admin").classList.add("hidden");
 }
-function renderSections() {
-  const container = document.getElementById('sections-container');
-  container.innerHTML = '';
-  categories.forEach(category => {
-    container.appendChild(createSection(category));
-  });
-  renderItems();
-  populateSearchSuggestions();
+
+function showLogin() {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("login").classList.remove("hidden");
+  document.getElementById("admin").classList.add("hidden");
 }
-function renderItems() {
-  const data = getData();
-  categories.forEach(category => {
-    const list = document.getElementById(category + '-list');
-    list.innerHTML = '';
-    data[category].forEach(item => {
-      const li = document.createElement('li');
-      li.className = 'item';
-      li.innerHTML = `
-        <h3>${item.name}</h3>
-        <div class="rating">${'★'.repeat(item.rating)}${'☆'.repeat(5 - item.rating)}</div>
-        <div class="comment">${item.comment}</div>
-      `;
-      list.appendChild(li);
-    });
-  });
-}
-function addItem(category) {
-  const nameInput = document.getElementById(category + '-name');
-  const ratingInput = document.getElementById(category + '-rating');
-  const commentInput = document.getElementById(category + '-comment');
-  const name = nameInput.value.trim();
-  const rating = parseInt(ratingInput.value);
-  const comment = commentInput.value.trim();
-  if (!name || isNaN(rating) || rating < 1 || rating > 5) {
-    alert('Please fill out a valid name and rating between 1 and 5.');
-    return;
+
+function login() {
+  const username = document.getElementById("admin-username").value;
+  const password = document.getElementById("admin-password").value;
+  if (username === "admin" && password === "password") {
+    showAdmin();
+  } else {
+    alert("Incorrect credentials, please try again.");
   }
-  const data = getData();
-  data[category].push({ name, rating, comment });
-  saveData(data);
-  nameInput.value = '';
-  ratingInput.value = '';
-  commentInput.value = '';
-  renderItems();
-  populateSearchSuggestions();
 }
-function populateSearchSuggestions() {
-  const data = getData();
-  const suggestions = [];
-  categories.forEach(cat => {
-    data[cat].forEach(item => {
-      suggestions.push(item.name);
-    });
+
+function showAdmin() {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("admin").classList.remove("hidden");
+  loadItems();
+}
+
+function loadItems() {
+  const items = JSON.parse(localStorage.getItem("items")) || [];
+  const container = document.getElementById("items-container");
+  container.innerHTML = "";
+  items.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.classList.add("item");
+    div.innerHTML = `<span>${item}</span><button onclick="deleteItem(${index})">Delete</button>`;
+    container.appendChild(div);
   });
-  const datalist = document.getElementById('search-list');
-  datalist.innerHTML = '';
-  suggestions.forEach(name => {
-    const option = document.createElement('option');
-    option.value = name;
+}
+
+function deleteItem(index) {
+  const items = JSON.parse(localStorage.getItem("items")) || [];
+  items.splice(index, 1);
+  localStorage.setItem("items", JSON.stringify(items));
+  loadItems();
+}
+
+function performSearch() {
+  const query = document.getElementById("searchBar").value.toLowerCase();
+  alert("You searched for: " + query);
+}
+
+// Initialize suggestions when the page loads
+window.onload = function() {
+  const suggestions = [
+    "Phoenix Flight School",
+    "Arizona Aviation Academy",
+    "Captain John Doe",
+    "DPE Jane Smith"
+  ];
+  const datalist = document.getElementById("searchSuggestions");
+  suggestions.forEach(item => {
+    const option = document.createElement("option");
+    option.value = item;
     datalist.appendChild(option);
   });
-}
-function performSearch() {
-  const query = document.getElementById('search-input').value.trim().toLowerCase();
-  const resultsDiv = document.getElementById('search-results');
-  resultsDiv.innerHTML = '';
-  if (!query) {
-    resultsDiv.textContent = '';
-    return;
-  }
-  const data = getData();
-  let results = [];
-  categories.forEach(cat => {
-    data[cat].forEach(item => {
-      if (item.name.toLowerCase().includes(query)) {
-        results.push({ category: cat, item });
-      }
-    });
-  });
-  if (results.length === 0) {
-    resultsDiv.innerHTML = '<p>No matches found.</p>';
-  } else {
-    results.forEach(result => {
-      const div = document.createElement('div');
-      div.className = 'item';
-      div.innerHTML = `<strong>${result.item.name}</strong> (${result.category})<br>
-        <div class="rating">${'★'.repeat(result.item.rating)}${'☆'.repeat(5 - result.item.rating)}</div>
-        <div class="comment">${result.item.comment}</div>`;
-      resultsDiv.appendChild(div);
-    });
-  }
-}
-document.addEventListener('DOMContentLoaded', renderSections);
+};
 </script>
 </body>
 </html>
