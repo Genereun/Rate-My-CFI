@@ -1,306 +1,1053 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <title>Rate my CFI</title>
- <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f5f5f5;
-  color: #1a1a1a;
-}
-.hidden {
-  display: none;
-}
-.top-nav {
-  background: #1f1f1f;
-  padding: 1rem 2rem;
-}
-.top-nav ul {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  gap: 2rem;
-}
-.top-nav a {
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rate My CFI & DPE — With Admin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      color: #1a1a1a;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
 
-.search-header {
-  background: #1f1f1f;
-  color: white;
-  text-align: center;
-  padding: 2rem 1rem;
-}
-.search-header h1 {
-  margin: 0;
-  font-size: 2rem;
-}
-.highlight {
-  color: #FFD700;
-}
-.search-container {
-  margin-top: 1rem;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  gap: 0.5rem;
-}
-.search-container input[type="text"] {
-  flex-grow: 1;
-  padding: 0.5rem;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-.search-container button {
-  padding: 0.5rem 1rem;
-  background: #0074D9;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-.instructions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding: 2rem 0;
-}
-.instructions .card {
-  background: white;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  width: 300px;
-  text-align: center;
-}
-.instructions .card img {
-  max-width: 80px;
-  margin-bottom: 1rem;
-}
-.instructions .card h3 {
-  margin-top: 0;
-}
-.login-screen, .admin-dashboard {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.login-screen h2, .admin-dashboard h2 {
-  text-align: center;
-  margin-top: 0;
-}
-.login-screen input {
-  width: 100%;
-  padding: 0.5rem;
-  margin: 0.5rem 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-.login-screen button {
-  width: 100%;
-  padding: 0.5rem;
-  border: none;
-  background: #0074D9;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-top: 1rem;
-}
+    .top-nav {
+      background-color: #1f1f1f;
+      padding: 0.75rem 2rem;
+    }
+    .top-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .top-nav ul li a {
+      color: #fff;
+      font-weight: bold;
+    }
 
-/* Additional Styles for Admin Dashboard */
-.admin-dashboard button {
-  padding: 0.5rem 1rem;
-  background: #0074D9;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 1rem;
-}
-.admin-dashboard .item {
-  background: #f9f9f9;
-  padding: 0.5rem;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-}
-.admin-dashboard .item button {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
+    .search-header {
+      background-color: #1f1f1f;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .search-header h1 {
+      color: #fff;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    .highlight {
+      color: #FFD700;
+    }
+    .search-container {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      border: 2px solid #3b6efb;
+      color: #000;
+      background-color: #fff;
+    }
+    #suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      z-index: 10;
+    }
+    #suggestions li {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      color: #000;
+    }
+    #suggestions li:hover {
+      background-color: #f0f0f0;
+    }
 
-</style>
+    .instructions {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 3rem 1rem;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      width: 280px;
+      text-align: center;
+    }
+    .card img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 1rem;
+    }
+    .card h3 {
+      margin: 0.5rem 0;
+      color: #1a1a1a;
+    }
+    .card p {
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .profile-screen {
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .profile-header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .profile-header h2 {
+      margin: 0;
+    }
+    .profile-header p {
+      margin: 0;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .overall-score-box {
+      width: 120px;
+      margin: 1rem auto;
+      background: #4caf50;
+      color: #fff;
+      font-size: 2rem;
+      padding: 1rem;
+      text-align: center;
+      border-radius: 15px;
+      font-weight: bold;
+    }
+
+    .school-ratings {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .school-ratings .item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .rating-box-school {
+      font-weight: bold;
+      color: white;
+      border-radius: 15px;
+      padding: 0.5rem 1rem;
+      font-size: 1.1rem;
+      min-width: 34px;
+      text-align: center;
+    }
+
+    .remarks-section {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    }
+    .remarks-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .review-item {
+      margin-bottom: 1.25rem;
+    }
+    .review-comment {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .review-meta {
+      margin-top: 0.25rem;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .action-area {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .action-area button {
+      background: #000;
+      color: #fff;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 50px;
+      transition: background 0.3s ease;
+    }
+    .action-area button:hover {
+      background: #333;
+    }
+
+    .section {
+      margin-top: 2rem;
+    }
+    .section h3 {
+      margin-bottom: 0.75rem;
+    }
+    .entry {
+      border-top: 1px solid #eee;
+      padding: 1rem 0;
+    }
+    .entry:first-child {
+      border-top: none;
+    }
+    .nested-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .nested-header .name {
+      font-weight: bold;
+    }
+    .nested-header .arrow {
+      color: #888;
+      font-size: 1rem;
+      margin-left: 0.5rem;
+      transition: transform 0.2s ease;
+    }
+    .nested-header.expanded .arrow {
+      transform: rotate(90deg);
+    }
+    .nested-details {
+      margin-top: 0.75rem;
+      margin-left: 1rem;
+      padding-left: 1rem;
+      border-left: 3px solid #eee;
+    }
+
+    .sub-rating {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .sub-rating div {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .nested-details .remarks {
+      margin-bottom: 0.75rem;
+    }
+    .nested-details .remarks p {
+      margin: 0;
+    }
+    .nested-details .remarks small {
+      color: #666;
+      font-size: 0.85rem;
+    }
+    .nested-details .add-btn {
+      background-color: #f0f0f0;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .nested-details .add-btn:hover {
+      background-color: #e2e2e2;
+    }
+
+    .rating-box, .rating-box-school {
+      color: white;
+      border-radius: 15px;
+      padding: 0.4rem 0.9rem;
+      min-width: 34px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    /* Modal & overlay for review */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .overlay.active {
+      display: flex;
+    }
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .modal .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #666;
+    }
+    .modal label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .modal input[type="range"] {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .modal textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 0.3rem;
+      font-size: 1rem;
+      resize: vertical;
+      min-height: 80px;
+    }
+    .modal .submit-btn {
+      margin-top: 1.5rem;
+      background: #000;
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .modal .submit-btn:hover {
+      background: #333;
+    }
+
+    /* Admin login panel */
+    .admin-login-panel {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      z-index: 2000;
+      display: none;
+      width: 90%;
+      max-width: 320px;
+    }
+    .admin-login-panel.active {
+      display: block;
+    }
+    .admin-login-panel label {
+      display: block;
+      margin-top: 1rem;
+    }
+    .admin-login-panel input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .admin-login-panel button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background: #1f1f1f;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Admin dashboard panel */
+    .admin-dashboard {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+      display: none;
+      z-index: 2000;
+    }
+    .admin-dashboard.active {
+      display: flex;
+    }
+    .admin-sidebar {
+      width: 240px;
+      background: #1f1f1f;
+      color: #fff;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    .admin-sidebar h2 {
+      margin-top: 0;
+    }
+    .admin-sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .admin-sidebar ul li {
+      margin: 1rem 0;
+    }
+    .admin-sidebar ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .admin-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-topbar {
+      background: #fff;
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .admin-content {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    .admin-entities {
+      flex: 2;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .admin-inbox {
+      width: 300px;
+      background: #fff;
+      border-left: 1px solid #ddd;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .request-item {
+      padding: 0.75rem;
+      border: 1px solid #eee;
+      margin-bottom: 0.75rem;
+      border-radius: 6px;
+    }
+    .request-item button {
+      margin-right: 0.5rem;
+    }
+    .entity-item {
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      border-radius: 6px;
+      background: #fff;
+    }
+    .entity-item .actions button {
+      margin-right: 0.5rem;
+    }
+  </style>
 </head>
 <body>
- <nav class="top-nav">
-  <ul>
-    <li><a onclick="showHome()">Home</a></li>
-    <li><a onclick="showLogin()">Log In</a></li>
-  </ul>
- </nav>
 
- <div id="home" class="home-screen">
-  <header class="search-header">
-    <h1>Rate my <span class="highlight">CFI</span></h1>
-    <div class="search-container">
-      <input type="text" id="searchBar" placeholder="Search for schools, CFIs, or DPEs" list="searchSuggestions" />
-      <datalist id="searchSuggestions">
-        <!-- Suggestions will be inserted here by JavaScript -->
-      </datalist>
-      <button onclick="performSearch()">Search</button>
+  <!-- Public Home / Search -->
+  <div id="homeScreen">
+    <nav class="top-nav">
+      <ul>
+        <li><a onclick="showHome()">Home</a></li>
+        <li><a onclick="toggleAdminLogin()">Log In</a></li>
+      </ul>
+    </nav>
+
+    <div class="search-header">
+      <h1><span class="highlight">Rate My</span> CFI & DPE</h1>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for schools, CFIs, or DPEs…" />
+        <ul id="suggestions"></ul>
+      </div>
     </div>
-  </header>
 
-  <section class="instructions">
-    <div class="card">
-      <img src="images/airport.png" alt="Find your school">
-      <h3>Find your school</h3>
-      <p>Search for flight schools near you. Discover details and programs they offer.</p>
+    <section class="instructions">
+      <div class="card">
+        <img src="https://img.icons8.com/ios/100/airport.png" alt="Airport Icon" />
+        <h3>Flexible Updates</h3>
+        <p>Modify your flight reviews as your experience evolves.</p>
+      </div>
+      <div class="card">
+        <img src="https://img.icons8.com/ios/100/private.png" alt="Privacy Icon" />
+        <h3>Stay Anonymous</h3>
+        <p>Your feedback is private — always.</p>
+      </div>
+      <div class="card">
+        <img src="https://img.icons8.com/ios/100/thumbs-up-down.png" alt="Vote Icon" />
+        <h3>Vote on Reviews</h3>
+        <p>Help highlight useful reviews for others.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Profile Screen -->
+  <div id="profileScreen" class="hidden">
+    <nav class="top-nav">
+      <ul>
+        <li><a onclick="showHome()">← Back to Home</a></li>
+      </ul>
+    </nav>
+
+    <div class="profile-screen">
+      <div class="profile-header">
+        <h2 id="schoolName">Aces High Aviation</h2>
+        <p id="schoolLocation">City, State</p>
+      </div>
+
+      <div class="overall-score-box">
+        <span id="overallScore">8</span>
+      </div>
+
+      <div class="school-ratings" id="schoolRatings">
+        <div class="item">
+          Instruction: <span class="rating-box-school" data-rating="9">9</span>
+        </div>
+        <div class="item">
+          Fleet: <span class="rating-box-school" data-rating="8">8</span>
+        </div>
+        <div class="item">
+          Availability: <span class="rating-box-school" data-rating="7">7</span>
+        </div>
+        <div class="item">
+          Culture: <span class="rating-box-school" data-rating="8">8</span>
+        </div>
+      </div>
+
+      <div class="remarks-section">
+        <div class="remarks-header" onclick="toggleRemarks()">
+          <h3>Remarks</h3>
+          <span id="remarksArrow">▼</span>
+        </div>
+        <div id="remarksList">
+          <div class="review-item">
+            <p class="review-comment">“Excellent instruction, very clear explanations.”</p>
+            <p class="review-meta">Anonymous • 2025-10-06</p>
+          </div>
+          <div class="review-item">
+            <p class="review-comment">“Good fleet, some delays in availability.”</p>
+            <p class="review-meta">Anonymous • 2025-09-30</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-area">
+        <button onclick="openReviewForm('school')">Write a Review</button>
+      </div>
+
+      <div class="section">
+        <h3>Instructors</h3>
+        <div class="entry">
+          <div class="nested-header" onclick="toggleDetails(this)">
+            <div>
+              <span class="name">Alice Smith</span>
+              <span class="arrow">▶</span>
+            </div>
+            <span class="rating-box" data-rating="9">9</span>
+          </div>
+          <div class="nested-details hidden">
+            <div class="sub-rating">
+              <div>Knowledge: <span class="rating-box" data-rating="9">9</span></div>
+              <div>Communication: <span class="rating-box" data-rating="8">8</span></div>
+              <div>Professionalism: <span class="rating-box" data-rating="10">10</span></div>
+              <div>Patience: <span class="rating-box" data-rating="8">8</span></div>
+            </div>
+            <div class="remarks">
+              <p>“Very professional and helpful!” <small>– 2025‑10‑01</small></p>
+            </div>
+            <button class="add-btn" onclick="openReviewForm('instructor', 'Alice Smith')">+ Write a Review</button>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="nested-header" onclick="toggleDetails(this)">
+            <div>
+              <span class="name">Bob Jones</span>
+              <span class="arrow">▶</span>
+            </div>
+            <span class="rating-box" data-rating="6">6</span>
+          </div>
+          <div class="nested-details hidden">
+            <div class="sub-rating">
+              <div>Knowledge: <span class="rating-box" data-rating="7">7</span></div>
+              <div>Communication: <span class="rating-box" data-rating="6">6</span></div>
+              <div>Professionalism: <span class="rating-box" data-rating="8">8</span></div>
+              <div>Patience: <span class="rating-box" data-rating="6">6</span></div>
+            </div>
+            <div class="remarks">
+              <p>“Could improve communication.” <small>– 2025‑09‑28</small></p>
+            </div>
+            <button class="add-btn" onclick="openReviewForm('instructor', 'Bob Jones')">+ Write a Review</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>DPEs</h3>
+        <div class="entry">
+          <div class="nested-header" onclick="toggleDetails(this)">
+            <div>
+              <span class="name">Carl Davis</span>
+              <span class="arrow">▶</span>
+            </div>
+            <span class="rating-box" data-rating="8">8</span>
+          </div>
+          <div class="nested-details hidden">
+            <div class="sub-rating">
+              <div>Knowledge: <span class="rating-box" data-rating="9">9</span></div>
+              <div>Professionalism: <span class="rating-box" data-rating="8">8</span></div>
+              <div>Toughness: <span class="rating-box" data-rating="7">7</span></div>
+              <div>Communication: <span class="rating-box" data-rating="9">9</span></div>
+            </div>
+            <div class="remarks">
+              <p>“Fair but firm.” <small>– 2025‑09‑15</small></p>
+            </div>
+            <button class="add-btn" onclick="openReviewForm('dpe', 'Carl Davis')">+ Write a Review</button>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="nested-header" onclick="toggleDetails(this)">
+            <div>
+              <span class="name">Dana Lane</span>
+              <span class="arrow">▶</span>
+            </div>
+            <span class="rating-box" data-rating="7">7</span>
+          </div>
+          <div class="nested-details hidden">
+            <div class="sub-rating">
+              <div>Knowledge: <span class="rating-box" data-rating="8">8</span></div>
+              <div>Professionalism: <span class="rating-box" data-rating="7">7</span></div>
+              <div>Toughness: <span class="rating-box" data-rating="6">6</span></div>
+              <div>Communication: <span class="rating-box" data-rating="8">8</span></div>
+            </div>
+            <div class="remarks">
+              <p>“Strict but fair.” <small>– 2025‑09‑20</small></p>
+            </div>
+            <button class="add-btn" onclick="openReviewForm('dpe', 'Dana Lane')">+ Write a Review</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <img src="images/private.png" alt="Choose your CFI">
-      <h3>Choose your CFI</h3>
-      <p>Select from a list of Certified Flight Instructors. See their ratings and reviews.</p>
+  </div>
+
+  <!-- Review Modal Overlay -->
+  <div id="overlay" class="overlay">
+    <div class="modal">
+      <button class="close-btn" onclick="closeReviewForm()">×</button>
+      <h3 id="modalTitle">Write a Review</h3>
+      <form id="reviewForm">
+        <input type="hidden" id="reviewType" name="reviewType" />
+        <input type="hidden" id="reviewTarget" name="reviewTarget" />
+        <div id="subRatingsContainer"></div>
+        <label for="comments">Comments / Remarks:</label>
+        <textarea id="comments" name="comments" placeholder="Your thoughts…" required></textarea>
+        <button type="submit" class="submit-btn">Submit Review</button>
+      </form>
     </div>
-    <div class="card">
-      <img src="images/thumbs-up-down.png" alt="Rate your experience">
-      <h3>Rate your experience</h3>
-      <p>After your flight, come back and rate your school and instructor.</p>
+  </div>
+
+  <!-- Admin Login Panel -->
+  <div id="adminLoginPanel" class="admin-login-panel">
+    <h3>Admin Login</h3>
+    <label>Username:
+      <input type="text" id="adminUser" />
+    </label>
+    <label>Password:
+      <input type="password" id="adminPass" />
+    </label>
+    <button onclick="doAdminLogin()">Log In</button>
+    <p id="adminLoginMsg" style="color:red;"></p>
+  </div>
+
+  <!-- Admin Dashboard / Inbox -->
+  <div id="adminDashboard" class="admin-dashboard">
+    <div class="admin-sidebar">
+      <h2>Admin Panel</h2>
+      <ul>
+        <li><a onclick="adminNav('schools')">Schools</a></li>
+        <li><a onclick="adminNav('instructors')">Instructors</a></li>
+        <li><a onclick="adminNav('dpes')">DPEs</a></li>
+      </ul>
     </div>
-  </section>
- </div>
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div>Dashboard</div>
+        <div><button onclick="adminLogout()">Log Out</button></div>
+      </div>
+      <div class="admin-content">
+        <div class="admin-entities" id="adminEntities">
+          <!-- Entities table / items -->
+        </div>
+        <div class="admin-inbox" id="adminInbox">
+          <h3>Inbox / Pending</h3>
+          <!-- Pending request items -->
+        </div>
+      </div>
+    </div>
+  </div>
 
- <div id="login" class="login-screen hidden">
-  <h2>Login</h2>
-  <input type="text" id="admin-username" placeholder="Username" />
-  <input type="password" id="admin-password" placeholder="Password" />
-  <button onclick="login()">Login</button>
- </div>
+  <script>
+    // Mock data
+    let pendingRequests = [
+      { id: 1, type: "School", name: "Skylight Flyers", location: "Denver, CO" },
+      { id: 2, type: "Instructor", name: "Jane Doe", location: "" },
+      { id: 3, type: "DPE", name: "John Pilot", location: "" }
+    ];
+    let schools = [
+      { id: 's1', name: "Aces High Aviation", location: "Phoenix, AZ" }
+    ];
+    let instructors = [
+      { id: 'i1', name: "Alice Smith", school: "Aces High Aviation" }
+    ];
+    let dpes = [
+      { id: 'd1', name: "Carl Davis", region: "SW" }
+    ];
 
- <div id="admin" class="admin-dashboard hidden">
-  <h2>Admin Dashboard</h2>
-  <button onclick="goBack()">Back to Home</button>
-  <div id="items-container"></div>
- </div>
+    let adminLoggedIn = false;
+    let adminCurrentSection = 'schools';
 
- <script>
- // script.js
-function showHome() {
-  document.getElementById("home").classList.remove("hidden");
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("admin").classList.add("hidden");
-}
+    // ========== Public UI Logic ===========
 
-function showLogin() {
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("login").classList.remove("hidden");
-  document.getElementById("admin").classList.add("hidden");
-}
+    const input = document.getElementById("searchInput");
+    const suggestions = document.getElementById("suggestions");
 
-function login() {
-  const username = document.getElementById("admin-username").value;
-  const password = document.getElementById("admin-password").value;
-  if (username === "admin" && password === "password") {
-    showAdmin();
-  } else {
-    alert("Incorrect credentials, please try again.");
-  }
-}
+    input.addEventListener("input", () => {
+      const val = input.value.trim().toLowerCase();
+      suggestions.innerHTML = "";
+      if (!val) return;
 
-function showAdmin() {
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("login").classList.add("hidden");
-  document.getElementById("admin").classList.remove("hidden");
-  loadItems();
-}
+      // Match in schools/instructors/dpes
+      schools.forEach(s => {
+        if (s.name.toLowerCase().includes(val)) {
+          const li = document.createElement("li");
+          li.textContent = `School: ${s.name}`;
+          li.onclick = () => {
+            showProfile(s.name);
+            suggestions.innerHTML = "";
+          };
+          suggestions.appendChild(li);
+        }
+      });
+      instructors.forEach(i => {
+        if (i.name.toLowerCase().includes(val)) {
+          const li = document.createElement("li");
+          li.textContent = `Instructor: ${i.name}`;
+          li.onclick = () => {
+            showProfile(i.name);
+            suggestions.innerHTML = "";
+          };
+          suggestions.appendChild(li);
+        }
+      });
+      dpes.forEach(d => {
+        if (d.name.toLowerCase().includes(val)) {
+          const li = document.createElement("li");
+          li.textContent = `DPE: ${d.name}`;
+          li.onclick = () => {
+            showProfile(d.name);
+            suggestions.innerHTML = "";
+          };
+          suggestions.appendChild(li);
+        }
+      });
 
-function loadItems() {
-  const items = JSON.parse(localStorage.getItem("items")) || [];
-  const container = document.getElementById("items-container");
-  container.innerHTML = "";
-  items.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.classList.add("item");
-    div.innerHTML = `<span>${item}</span><button onclick="deleteItem(${index})">Delete</button>`;
-    container.appendChild(div);
-  });
-}
+      // Add “Add new” option
+      const liAdd = document.createElement("li");
+      liAdd.textContent = `Add “${val}” as School / Instructor / DPE`;
+      liAdd.style.fontStyle = "italic";
+      liAdd.onclick = () => {
+        pendingRequests.push({
+          id: pendingRequests.length + 1,
+          type: "School",
+          name: input.value.trim(),
+          location: ""
+        });
+        alert(`Request submitted: ${input.value}`);
+        suggestions.innerHTML = "";
+        input.value = "";
+      };
+      suggestions.appendChild(liAdd);
+    });
 
-function deleteItem(index) {
-  const items = JSON.parse(localStorage.getItem("items")) || [];
-  items.splice(index, 1);
-  localStorage.setItem("items", JSON.stringify(items));
-  loadItems();
-}
+    function showProfile(name) {
+      document.getElementById("homeScreen").classList.add("hidden");
+      document.getElementById("profileScreen").classList.remove("hidden");
+      document.getElementById("schoolName").textContent = name;
+      applyRatingColors();
+    }
+    function showHome() {
+      document.getElementById("profileScreen").classList.add("hidden");
+      document.getElementById("homeScreen").classList.remove("hidden");
+    }
+    function toggleRemarks() {
+      const list = document.getElementById("remarksList");
+      const arrow = document.getElementById("remarksArrow");
+      if (list.classList.contains("hidden")) {
+        list.classList.remove("hidden");
+        arrow.textContent = "▼";
+      } else {
+        list.classList.add("hidden");
+        arrow.textContent = "►";
+      }
+    }
 
-function performSearch() {
-  const query = document.getElementById("searchBar").value.toLowerCase();
-  alert("You searched for: " + query);
-}
+    function openReviewForm(type, target = "") {
+      document.getElementById("overlay").classList.add("active");
+      const modalTitle = document.getElementById("modalTitle");
+      const reviewType = document.getElementById("reviewType");
+      const reviewTarget = document.getElementById("reviewTarget");
+      const subRatingsContainer = document.getElementById("subRatingsContainer");
 
-// Initialize suggestions when the page loads
-window.onload = function() {
-  const suggestions = [
-    "Phoenix Flight School",
-    "Arizona Aviation Academy",
-    "Captain John Doe",
-    "DPE Jane Smith"
-  ];
-  const datalist = document.getElementById("searchSuggestions");
-  suggestions.forEach(item => {
-    const option = document.createElement("option");
-    option.value = item;
-    datalist.appendChild(option);
-  });
+      reviewType.value = type;
+      reviewTarget.value = target;
+      modalTitle.textContent = `Write a Review — ${type.charAt(0).toUpperCase() + type.slice(1)} ${target || ""}`;
 
-<style>
-/* Overrides for improved user experience */
-.search-header h1 {
-  font-size: 3rem;
-}
-.search-container {
-  max-width: 700px;
-}
-.search-container input[type="text"] {
-  padding: 0.75rem;
-  font-size: 1.2rem;
-}
-.search-container button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1.2rem;
-}
-.instructions .card img {
-  max-width: 100px;
-}
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.home-screen {
-  flex: 1 0 auto;
-}
-</style>
-};
-</script>
+      subRatingsContainer.innerHTML = "";
+
+      let subCats = [];
+      if (type === "school") subCats = ["Instruction", "Fleet", "Availability", "Culture"];
+      else if (type === "instructor") subCats = ["Knowledge", "Communication", "Professionalism", "Patience"];
+      else if (type === "dpe") subCats = ["Knowledge", "Professionalism", "Toughness", "Communication"];
+
+      subCats.forEach(cat => {
+        const catId = `val_${cat.toLowerCase()}`;
+        const lbl = document.createElement("label");
+        lbl.innerHTML = `${cat} (1–10): <strong id="${catId}">5</strong>`;
+        const slider = document.createElement("input");
+        slider.type = "range";
+        slider.min = "1";
+        slider.max = "10";
+        slider.value = "5";
+        slider.name = `sub_${cat.toLowerCase()}`;
+        slider.oninput = () => {
+          document.getElementById(catId).textContent = slider.value;
+        };
+        subRatingsContainer.appendChild(lbl);
+        subRatingsContainer.appendChild(slider);
+      });
+
+      document.getElementById("comments").value = "";
+    }
+    function closeReviewForm() {
+      document.getElementById("overlay").classList.remove("active");
+    }
+    document.getElementById("reviewForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      let total = 0;
+      let count = 0;
+      for (let [key, val] of formData.entries()) {
+        if (key.startsWith("sub_")) {
+          total += parseInt(val, 10);
+          count++;
+        }
+      }
+      const overall = count > 0 ? Math.round(total / count) : null;
+      formData.append("overall_rating", overall);
+      console.log("Submit review data:", Object.fromEntries(formData.entries()));
+      alert(`Review submitted! Overall rating computed as ${overall}`);
+      closeReviewForm();
+    });
+    function toggleDetails(headerElem) {
+      const details = headerElem.nextElementSibling;
+      const arrowSpan = headerElem.querySelector(".arrow");
+      headerElem.classList.toggle("expanded");
+      if (!details) return;
+      details.classList.toggle("hidden");
+      if (arrowSpan) {
+        arrowSpan.textContent = details.classList.contains("hidden") ? "▶" : "▼";
+      }
+    }
+    function applyRatingColors() {
+      document.querySelectorAll(".rating-box-school").forEach(el => {
+        const r = parseInt(el.dataset.rating, 10);
+        if (!isNaN(r)) {
+          const hue = (r - 1) * 12;
+          el.style.backgroundColor = `hsl(${hue}, 70%, 50%)`;
+        }
+      });
+      document.querySelectorAll(".rating-box").forEach(el => {
+        const r = parseInt(el.dataset.rating, 10);
+        if (!isNaN(r)) {
+          const hue = (r - 1) * 12;
+          el.style.backgroundColor = `hsl(${hue}, 70%, 50%)`;
+        }
+      });
+    }
+
+    // ========== Admin / Dashboard Logic ===========
+
+    function toggleAdminLogin() {
+      document.getElementById("adminLoginPanel").classList.toggle("active");
+    }
+    function doAdminLogin() {
+      const user = document.getElementById("adminUser").value;
+      const pass = document.getElementById("adminPass").value;
+      const msg = document.getElementById("adminLoginMsg");
+      if (user === "admin" && pass === "password123") {
+        adminLoggedIn = true;
+        msg.textContent = "";
+        document.getElementById("adminLoginPanel").classList.remove("active");
+        openAdminDashboard();
+      } else {
+        msg.textContent = "Invalid credentials.";
+      }
+    }
+    function openAdminDashboard() {
+      document.getElementById("adminDashboard").classList.add("active");
+      renderAdminInbox();
+      renderAdminEntities();
+    }
+    function adminLogout() {
+      adminLoggedIn = false;
+      document.getElementById("adminDashboard").classList.remove("active");
+    }
+
+    function adminNav(section) {
+      adminCurrentSection = section;
+      renderAdminEntities();
+    }
+
+    function renderAdminInbox() {
+      const inboxEl = document.getElementById("adminInbox");
+      inboxEl.innerHTML = `<h3>Inbox / Pending</h3>`;
+      if (pendingRequests.length === 0) {
+        inboxEl.innerHTML += `<p>No pending requests.</p>`;
+        return;
+      }
+      pendingRequests.forEach(req => {
+        const div = document.createElement("div");
+        div.className = "request-item";
+        div.innerHTML = `
+          <strong>${req.type}</strong>: ${req.name} ${req.location ? "(" + req.location + ")" : ""}
+          <div>
+            <button onclick="approveReq(${req.id})">Approve</button>
+            <button onclick="rejectReq(${req.id})">Reject</button>
+          </div>
+        `;
+        inboxEl.appendChild(div);
+      });
+    }
+
+    function renderAdminEntities() {
+      const entEl = document.getElementById("adminEntities");
+      entEl.innerHTML = `<h3>${capitalize(adminCurrentSection)}</h3>`;
+      let arr = [];
+      if (adminCurrentSection === 'schools') arr = schools;
+      else if (adminCurrentSection === 'instructors') arr = instructors;
+      else if (adminCurrentSection === 'dpes') arr = dpes;
+
+      if (arr.length === 0) {
+        entEl.innerHTML += `<p>No entries.</p>`;
+        return;
+      }
+      arr.forEach(ent => {
+        const div = document.createElement("div");
+        div.className = "entity-item";
+        div.innerHTML = `
+          <div><strong>${ent.name}</strong></div>
+          <div class="actions">
+            <button onclick="editEntity('${adminCurrentSection}', '${ent.id}')">Edit</button>
+            <button onclick="deleteEntity('${adminCurrentSection}', '${ent.id}')">Delete</button>
+          </div>
+        `;
+        entEl.appendChild(div);
+      });
+    }
+
+    function approveReq(id) {
+      const idx = pendingRequests.findIndex(r => r.id === id);
+      if (idx >= 0) {
+        const req = pendingRequests[idx];
+        alert(`Approved ${req.type}: ${req.name}`);
+        // Move into appropriate list
+        if (req.type === "School") {
+          schools.push({ id: `s${schools.length+1}`, name: req.name, location: req.location });
+        } else if (req.type === "Instructor") {
+          instructors.push({ id: `i${instructors.length+1}`, name: req.name, school: "" });
+        } else if (req.type === "DPE") {
+          dpes.push({ id: `d${dpes.length+1}`, name: req.name, region: "" });
+        }
+        pendingRequests.splice(idx, 1);
+        renderAdminInbox();
+        renderAdminEntities();
+      }
+    }
+    function rejectReq(id) {
+      const idx = pendingRequests.findIndex(r => r.id === id);
+      if (idx >= 0) {
+        const req = pendingRequests[idx];
+        alert(`Rejected ${req.type}: ${req.name}`);
+        pendingRequests.splice(idx, 1);
+        renderAdminInbox();
+      }
+    }
+    function editEntity(section, id) {
+      alert(`Edit ${section} entry with id ${id}`);
+      // Could open edit form or modal
+    }
+    function deleteEntity(section, id) {
+      alert(`Delete ${section} entry with id ${id}`);
+      if (section === 'schools') {
+        schools = schools.filter(s => s.id !== id);
+      } else if (section === 'instructors') {
+        instructors = instructors.filter(i => i.id !== id);
+      } else if (section === 'dpes') {
+        dpes = dpes.filter(d => d.id !== id);
+      }
+      renderAdminEntities();
+    }
+
+    function capitalize(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      applyRatingColors();
+    });
+  </script>
 </body>
 </html>
